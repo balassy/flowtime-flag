@@ -20,7 +20,11 @@ If you wish to further improve this wiring you can download the [Fritzing Sketch
 
 ### Enclosure
 
-TBD
+You can find the enclosure designed for 3D printing for this project here: https://www.thingiverse.com/thing:4012382
+
+![](./doc/enclosure/flowtime-flag-complete.png)
+
+![](./doc/enclosure/flowtime-flag-opened.png)
 
 ### Software
 
