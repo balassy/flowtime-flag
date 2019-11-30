@@ -10,7 +10,13 @@ This code connects to the specified time server to retrieve the current time adj
 
 ### Hardware
 
-TBD
+For the electronics all you need is a NodeMCU ESP8266 microcontroller and an SG90 servo motor. The servo needs +5V, so you have to power your board from USB, and then connect the servo to the `Vin` and `GND` pins of the NodeMCU. To control the servo position the code uses the `D7` pin (you can change that in `config.h`).
+
+![](./doc/wiring/flowtime-flag-breadboard.png)
+
+![](./doc/wiring/flowtime-flag-schematic.png)
+
+If you wish to further improve this wiring you can download the [Fritzing Sketch](./doc/wiring/flowtime-flag.fzz) as well.
 
 ### Enclosure
 
