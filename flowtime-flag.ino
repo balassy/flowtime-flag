@@ -27,11 +27,9 @@ void setup() {
   servo.moveSlowTo(FLOWTIME_END_POSITION + 30);
 
   initNetwork();
-
   servo.moveSlowTo(FLOWTIME_END_POSITION + 60);
 
   initTimeServerConnection();
-
   servo.moveSlowTo(FLOWTIME_END_POSITION + 90);
 
   flowTimeBeginMinutesOfDay = getMinutesOfDay(FLOWTIME_BEGIN_HOUR, FLOWTIME_BEGIN_MINUTE);
@@ -71,7 +69,7 @@ void initTimeServerConnection() {
 }
 
 void wave() {
-  servo.moveNowTo(WAVE_START_POSITION);
+  servo.moveSlowTo(WAVE_START_POSITION);
   delay(500);
   servo.moveSlowTo(WAVE_END_POSITION);
   delay(500);
