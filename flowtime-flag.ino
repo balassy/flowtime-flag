@@ -27,10 +27,7 @@ void setup() {
   servo.moveSlowTo(FLOWTIME_END_POSITION + 30);
 
   initNetwork();
-  servo.moveSlowTo(FLOWTIME_END_POSITION + 60);
-
   initTimeServerConnection();
-  servo.moveSlowTo(FLOWTIME_END_POSITION + 90);
 
   flowTimeBeginMinutesOfDay = getMinutesOfDay(FLOWTIME_BEGIN_HOUR, FLOWTIME_BEGIN_MINUTE);
   flowTimeEndMinutesOfDay = getMinutesOfDay(FLOWTIME_END_HOUR, FLOWTIME_END_MINUTE);
@@ -39,8 +36,6 @@ void setup() {
   Serial.printf("Configured flow time: %d:%d (%d) - %d:%d (%d).\n", FLOWTIME_BEGIN_HOUR, FLOWTIME_BEGIN_MINUTE, flowTimeBeginMinutesOfDay, FLOWTIME_END_HOUR, FLOWTIME_END_MINUTE, flowTimeEndMinutesOfDay);
   Serial.println(F("Setup completed."));
 
-  wave();
-  delay(500);
   servo.moveSlowTo(FLOWTIME_END_POSITION);
 }
 
@@ -68,16 +63,6 @@ void initTimeServerConnection() {
   ntpClient.init(NTP_SERVER_HOST);
 }
 
-void wave() {
-  servo.moveSlowTo(WAVE_START_POSITION);
-  delay(500);
-  servo.moveSlowTo(WAVE_END_POSITION);
-  delay(500);
-  servo.moveSlowTo(WAVE_START_POSITION);
-  delay(500);
-  servo.moveSlowTo(WAVE_END_POSITION);
-}
-
 void loop() {
   strDateTime currentTime = getCurrentTime();
   bool isNowFlowTime = isFlowTime(currentTime);
@@ -96,9 +81,15 @@ void loop() {
 
 void beginFlowTime() {
   Serial.println(F("Starting flow time..."));
-  wave();
-  servo.moveSlowTo(FLOWTIME_START_POSITION);
+  servo.moveSlowTo(WAVE_START_POSITION);
   delay(500);
+  servo.moveSlowTo(WAVE_END_POSITION);
+  delay(500);
+  servo.moveSlowTo(WAVE_START_POSITION);
+  delay(500);
+  servo.moveSlowTo(WAVE_END_POSITION);
+  delay(500);
+  servo.moveSlowTo(FLOWTIME_START_POSITION);
 }
 
 void endFlowTime() {
@@ -117,7 +108,7 @@ strDateTime getCurrentTime() {
     return currentTime;
   } else {
     Serial.println(F("Getting current time failed, waiting and trying again..."));
-    delay(100);  // Adding this delay make the function work 100% reliable on the subsequent try.
+    delay(200);  // Adding this delay make the function work 100% reliable on the subsequent try.
     return getCurrentTime();
   }
 }

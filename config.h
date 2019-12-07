@@ -1,5 +1,3 @@
-const char* APP_VERSION = "0.0.1";
-
 #ifndef LED_BUILTIN
 #define LED_BUILTIN D0
 #endif
