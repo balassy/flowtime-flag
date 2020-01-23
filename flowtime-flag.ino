@@ -16,8 +16,10 @@ WiFiManager wifiManager;
 NTPtime ntpClient;
 SpeedServo servo;
 
-int flowTimeBeginMinutesOfDay;
-int flowTimeEndMinutesOfDay;
+int flowTime1BeginMinutesOfDay;
+int flowTime1EndMinutesOfDay;
+int flowTime2BeginMinutesOfDay;
+int flowTime2EndMinutesOfDay;
 bool isNowFlowTimeLast;
 
 void setup() {
@@ -29,11 +31,13 @@ void setup() {
   initNetwork();
   initTimeServerConnection();
 
-  flowTimeBeginMinutesOfDay = getMinutesOfDay(FLOWTIME_BEGIN_HOUR, FLOWTIME_BEGIN_MINUTE);
-  flowTimeEndMinutesOfDay = getMinutesOfDay(FLOWTIME_END_HOUR, FLOWTIME_END_MINUTE);
+  flowTime1BeginMinutesOfDay = getMinutesOfDay(FLOWTIME1_BEGIN_HOUR, FLOWTIME1_BEGIN_MINUTE);
+  flowTime1EndMinutesOfDay = getMinutesOfDay(FLOWTIME1_END_HOUR, FLOWTIME1_END_MINUTE);
+  flowTime2BeginMinutesOfDay = getMinutesOfDay(FLOWTIME2_BEGIN_HOUR, FLOWTIME2_BEGIN_MINUTE);
+  flowTime2EndMinutesOfDay = getMinutesOfDay(FLOWTIME2_END_HOUR, FLOWTIME2_END_MINUTE);
   isNowFlowTimeLast = false;
 
-  Serial.printf("Configured flow time: %d:%d (%d) - %d:%d (%d).\n", FLOWTIME_BEGIN_HOUR, FLOWTIME_BEGIN_MINUTE, flowTimeBeginMinutesOfDay, FLOWTIME_END_HOUR, FLOWTIME_END_MINUTE, flowTimeEndMinutesOfDay);
+  Serial.printf("Configured flow times: %d:%d (%d) - %d:%d (%d) and %d:%d (%d) - %d:%d (%d).\n", FLOWTIME1_BEGIN_HOUR, FLOWTIME1_BEGIN_MINUTE, flowTime1BeginMinutesOfDay, FLOWTIME1_END_HOUR, FLOWTIME1_END_MINUTE, flowTime1EndMinutesOfDay, FLOWTIME2_BEGIN_HOUR, FLOWTIME2_BEGIN_MINUTE, flowTime2BeginMinutesOfDay, FLOWTIME2_END_HOUR, FLOWTIME2_END_MINUTE, flowTime2EndMinutesOfDay);
   Serial.println(F("Setup completed."));
 
   servo.moveSlowTo(FLOWTIME_END_POSITION);
@@ -119,7 +123,11 @@ bool isFlowTime(strDateTime currentTime) {
   int currentMinutesOfDay = getMinutesOfDay(currentHour, currentMinute);
 
   Serial.printf("Current time: %d:%d (%d)\n", currentHour, currentMinute, currentMinutesOfDay);
-  return flowTimeBeginMinutesOfDay <= currentMinutesOfDay && currentMinutesOfDay <= flowTimeEndMinutesOfDay;
+
+  bool isFlowTime1 = flowTime1BeginMinutesOfDay <= currentMinutesOfDay && currentMinutesOfDay <= flowTime1EndMinutesOfDay;
+  bool isFlowTime2 = flowTime2BeginMinutesOfDay <= currentMinutesOfDay && currentMinutesOfDay <= flowTime2EndMinutesOfDay;
+
+  return isFlowTime1 || isFlowTime2;
 }
 
 int getMinutesOfDay(byte hours, byte minutes) {
