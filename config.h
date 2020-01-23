@@ -15,10 +15,14 @@ const int DST_ADJUSTMENT = 1; // 1 for European summer time; 2 for US daylight s
 // #define DEBUG_ON
 
 // Time period configuration.
-const byte FLOWTIME_BEGIN_HOUR = 13;
-const byte FLOWTIME_BEGIN_MINUTE = 15;
-const byte FLOWTIME_END_HOUR = 14;
-const byte FLOWTIME_END_MINUTE = 30;
+const byte FLOWTIME1_BEGIN_HOUR = 9;
+const byte FLOWTIME1_BEGIN_MINUTE = 0;
+const byte FLOWTIME1_END_HOUR = 11;
+const byte FLOWTIME1_END_MINUTE = 0;
+const byte FLOWTIME2_BEGIN_HOUR = 17;
+const byte FLOWTIME2_BEGIN_MINUTE = 0;
+const byte FLOWTIME2_END_HOUR = 19;
+const byte FLOWTIME2_END_MINUTE = 0;
 
 // Pin configuration.
 const uint8_t PIN_SERVO = D7;
