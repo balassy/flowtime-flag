@@ -11,6 +11,10 @@ const char* NTP_SERVER_HOST = "hu.pool.ntp.org";
 const float TIME_ZONE = 1.0;  // Time zone in floating point (e.g. for India).
 const int DST_ADJUSTMENT = 1; // 1 for European summer time; 2 for US daylight saving time; 0 for no DST adjustment.
 
+// Time server access.
+const int NTP_MAX_RETRY_COUNT = 10;
+const int NTP_RETRY_DELAY_MSEC = 3000;
+
 // Define this constant to log debug messages from the NTPTimeESP library.
 // #define DEBUG_ON
 

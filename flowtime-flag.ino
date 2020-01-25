@@ -22,6 +22,8 @@ int flowTime2BeginMinutesOfDay;
 int flowTime2EndMinutesOfDay;
 bool isNowFlowTimeLast;
 
+int ntpCurrentRetryCount = 1;
+
 void setup() {
   initSerial();
 
@@ -69,16 +71,19 @@ void initTimeServerConnection() {
 
 void loop() {
   strDateTime currentTime = getCurrentTime();
-  bool isNowFlowTime = isFlowTime(currentTime);
-  if (isNowFlowTime != isNowFlowTimeLast) {
-    if (isNowFlowTime) {
-      beginFlowTime();
+
+  if (currentTime.valid) {
+    bool isNowFlowTime = isFlowTime(currentTime);
+    if (isNowFlowTime != isNowFlowTimeLast) {
+      if (isNowFlowTime) {
+        beginFlowTime();
+      }
+      else {
+        endFlowTime();
+      }
     }
-    else {
-      endFlowTime();
-    }
+    isNowFlowTimeLast = isNowFlowTime;
   }
-  isNowFlowTimeLast = isNowFlowTime;
 
   delay(60000);
 }
@@ -108,12 +113,21 @@ strDateTime getCurrentTime() {
   strDateTime currentTime = ntpClient.getNTPtime(TIME_ZONE, DST_ADJUSTMENT);
 
   if(currentTime.valid){
+    ntpCurrentRetryCount = 1;  // Reset the retry counter;
     ntpClient.printDateTime(currentTime);
     return currentTime;
   } else {
-    Serial.println(F("Getting current time failed, waiting and trying again..."));
-    delay(200);  // Adding this delay make the function work 100% reliable on the subsequent try.
-    return getCurrentTime();
+    ntpCurrentRetryCount++;
+    if (ntpCurrentRetryCount <= NTP_MAX_RETRY_COUNT) {
+      Serial.println(F("Getting current time failed, waiting and trying again..."));
+      delay(NTP_RETRY_DELAY_MSEC);
+      return getCurrentTime();
+    } else {
+      Serial.println(F("Getting current time failed, no more retries."));
+      strDateTime invalidCurrentTime;
+      invalidCurrentTime.valid = false;
+      return invalidCurrentTime;
+    }
   }
 }
 
